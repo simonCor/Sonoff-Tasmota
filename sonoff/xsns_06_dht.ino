@@ -25,6 +25,9 @@
  * Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
  * Source: Adafruit Industries https://github.com/adafruit/DHT-sensor-library
 \*********************************************************************************************/
+#ifdef USE_LOCAL_SENSOR_DATA
+#include "local_sensor_data.h"
+#endif
 
 #define DHT_MAX_SENSORS  3
 #define DHT_MAX_RETRY    8
@@ -33,6 +36,9 @@ uint32_t dht_max_cycles;
 uint8_t dht_data[5];
 byte dht_sensors = 0;
 
+#ifdef USE_LOCAL_SENSOR_DATA
+LocalSensorData *lsd = LocalSensorData::getInstance();
+#endif
 struct DHTSTRUCT {
   byte     pin;
   byte     type;
@@ -188,6 +194,9 @@ void DhtInit()
       snprintf_P(Dht[i].stype, sizeof(Dht[i].stype), PSTR("%s-%02d"), Dht[i].stype, Dht[i].pin);
     }
   }
+#ifdef USE_LOCAL_SENSOR_DATA
+  lsd->setData(LocalSensorData::types::temperature, NAN);
+#endif
 }
 
 void DhtEverySecond()
@@ -230,6 +239,11 @@ void DhtShow(boolean json)
       snprintf_P(mqtt_data, sizeof(mqtt_data), HTTP_SNS_TEMP, mqtt_data, Dht[i].stype, temperature, TempUnit());
       snprintf_P(mqtt_data, sizeof(mqtt_data), HTTP_SNS_HUM, mqtt_data, Dht[i].stype, humidity);
 #endif  // USE_WEBSERVER
+      }
+#ifdef USE_LOCAL_SENSOR_DATA
+      lsd->setData(LocalSensorData::types::temperature, t);
+      lsd->setData(LocalSensorData::types::humidity, h);
+#endif
     }
   }
 }
