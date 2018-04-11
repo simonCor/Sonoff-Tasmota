@@ -274,6 +274,18 @@ boolean Xsns06(byte function)
         DhtShow(0);
         break;
 #endif  // USE_WEBSERVER
+#ifdef USE_LOCAL_SENSOR_DATA
+      case FUNC_EVERY_SECOND:
+        {
+          static uint_fast8_t secondsCounter = 0;
+          secondsCounter++;
+          // Only get temperature each minute
+          if(!(secondsCounter%60)) {
+            DhtShow(0);
+          }
+        }
+        break;
+#endif // USE_LOCAL_SENSOR_DATA
     }
   }
   return result;
