@@ -30,8 +30,15 @@
 - light seonsr
 - particle data
 */
+#ifndef LOCAL_SENSOR_DATA_H_
+#define LOCAL_SENSOR_DATA_H_
+
 #include <map>
 #include "stdint.h"
+
+/* Forward declaration of stuff in these weird .ino files */
+void AddLog(uint8_t loglevel);
+char* dtostrfd(double number, unsigned char prec, char *s);
 
 class LocalSensorData {
     public:
@@ -50,3 +57,5 @@ class LocalSensorData {
     void setData(types dt, float d);
     float getData(types dt);
 };
+
+#endif // LOCAL_SENSOR_DATA_H_

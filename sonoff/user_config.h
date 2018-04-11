@@ -348,7 +348,7 @@
 
 // -- other Software support ----------------------
 #define USE_LOCAL_SENSOR_DATA                // Add support for caching of local sensor data to be used by local applications
-
+#define USE_LOCAL_TEMPERATURE_SWITCH           // Activate the local temperature switch function
 /*********************************************************************************************\
  * Optional firmware configurations
  * Select none or just one for optional features and sensors as configured in sonoff_post.h

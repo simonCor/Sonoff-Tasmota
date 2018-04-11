@@ -1,6 +1,10 @@
 #include <cstddef>
 #include <cmath>
 #include "local_sensor_data.h"
+#include "pgmspace.h"
+#include "sonoff.h"
+
+extern char log_data[LOGSZ];
 
 LocalSensorData *LocalSensorData::inst = NULL;
 
