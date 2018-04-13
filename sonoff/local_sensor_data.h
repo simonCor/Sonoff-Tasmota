@@ -17,19 +17,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-- temperature
-- humidity
-- gas
-- pressure
-- ambient light
-- UV light
-- Analog voltage value
-- Current value
-- CO2
-- light seonsr
-- particle data
-*/
 #ifndef LOCAL_SENSOR_DATA_H_
 #define LOCAL_SENSOR_DATA_H_
 
@@ -42,7 +29,19 @@ char* dtostrfd(double number, unsigned char prec, char *s);
 
 class LocalSensorData {
     public:
-    enum class types {temperature, humidity, pressure};
+    /* These are the base sensor data types. When you have a system
+     * with other/more data of the same type, just add it to the list 
+     */
+    enum class types {
+      temperature, 
+      humidity, 
+      pressure, 
+      gas, 
+      light, 
+      uvLight, 
+      voltage,
+      current,
+      particles};
     static LocalSensorData *getInstance();
 
     private:
