@@ -210,6 +210,17 @@ void DhtEverySecond()
       DhtReadTempHum(i);
     }
   }
+
+#ifdef USE_LOCAL_SENSOR_DATA
+  {
+    static uint_fast8_t secondsCounter = 0;
+    secondsCounter++;
+    // Only get temperature each minute
+    if(!(secondsCounter%60)) {
+      DhtShow(0);
+    }
+  }
+#endif // USE_LOCAL_SENSOR_DATA
 }
 
 void DhtShow(boolean json)
@@ -239,12 +250,11 @@ void DhtShow(boolean json)
       snprintf_P(mqtt_data, sizeof(mqtt_data), HTTP_SNS_TEMP, mqtt_data, Dht[i].stype, temperature, TempUnit());
       snprintf_P(mqtt_data, sizeof(mqtt_data), HTTP_SNS_HUM, mqtt_data, Dht[i].stype, humidity);
 #endif  // USE_WEBSERVER
-      }
-#ifdef USE_LOCAL_SENSOR_DATA
-      lsd->setData(LocalSensorData::types::temperature, t);
-      lsd->setData(LocalSensorData::types::humidity, h);
-#endif
     }
+#ifdef USE_LOCAL_SENSOR_DATA
+    lsd->setData(LocalSensorData::types::temperature, Dht[i].t);
+    lsd->setData(LocalSensorData::types::humidity, Dht[i].h);
+#endif
   }
 }
 
@@ -274,18 +284,6 @@ boolean Xsns06(byte function)
         DhtShow(0);
         break;
 #endif  // USE_WEBSERVER
-#ifdef USE_LOCAL_SENSOR_DATA
-      case FUNC_EVERY_SECOND:
-        {
-          static uint_fast8_t secondsCounter = 0;
-          secondsCounter++;
-          // Only get temperature each minute
-          if(!(secondsCounter%60)) {
-            DhtShow(0);
-          }
-        }
-        break;
-#endif // USE_LOCAL_SENSOR_DATA
     }
   }
   return result;
