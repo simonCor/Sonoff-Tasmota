@@ -45,13 +45,13 @@ void Local_Temperature_Every_Second() {
     if(currentTemp > 5.0) {
       snprintf_P(log_data, sizeof(log_data), "Above 5 deg -> off");
       AddLog(LOG_LEVEL_INFO);
-      ExecuteCommandPower(1, 0);
+      ExecuteCommandPower(1, 0, SRC_LOCAL);
     } 
 
     if(currentTemp < 3.0) {
       snprintf_P(log_data, sizeof(log_data), "Below 3 deg -> on");
       AddLog(LOG_LEVEL_INFO);
-      ExecuteCommandPower(1, 1);
+      ExecuteCommandPower(1, 1, SRC_LOCAL);
     }
     secondCounterSinceLastSwitch = 0;
   }
